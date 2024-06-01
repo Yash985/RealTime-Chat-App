@@ -5,6 +5,8 @@ import cookieParser from "cookie-parser";
 //File imports
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
+import userRoutes from "./routes/user.routes.js";
+//Database connection
 import connectToDb from "./db/connectToDb.js";
 
 const app = express();
@@ -17,6 +19,7 @@ app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
 app.use(cookieParser());//Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/users", userRoutes);
 
 
 
