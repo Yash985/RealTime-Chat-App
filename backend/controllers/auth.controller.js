@@ -4,7 +4,9 @@ import generateToken from "../utils/generateToken.js";
 
 export const signupUser = async (req, res) => {
   try {
-    const { fullName, username, password, confirmPassword, gender } = req.body;
+    const { fullName, username, password, confirmPassword, gender } =
+      JSON.parse(req.body.data);
+
     if (password !== confirmPassword) {
       return res.status(400).json({ message: "Passwords do not match" });
     }
@@ -50,12 +52,13 @@ export const signupUser = async (req, res) => {
     res.status(500).json({ error: "Server error while signing up" });
   }
 };
-export const loginUser = async(req, res) => {
+export const loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
 
-    const isPasswordValid = user && (await bcrypt.compare(password, user.password));
+    const isPasswordValid =
+      user && (await bcrypt.compare(password, user.password));
 
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid username or password" });
@@ -77,7 +80,7 @@ export const loginUser = async(req, res) => {
 
 export const logoutUser = (req, res) => {
   try {
-    res.cookie("jwtToken", "", { maxAge: 0 });//Clear cookie
+    res.cookie("jwtToken", "", { maxAge: 0 }); //Clear cookie
     res.status(200).json({ message: "User logged out successfully" });
   } catch (err) {
     console.log("Error while logging out", err.message);
