@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./pages/home/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { AuthContextProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -23,9 +24,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="p-4 h-screen flex items-center justify-center">
-      <RouterProvider router={router}>
-        <Toaster />
-      </RouterProvider>
+      <AuthContextProvider>
+        <RouterProvider router={router}>
+          <Toaster />
+        </RouterProvider>
+      </AuthContextProvider>
     </div>
   );
 }

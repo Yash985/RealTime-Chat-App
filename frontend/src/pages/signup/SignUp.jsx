@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import GenderCheckBox from "./GenderCheckBox";
 import useSignUp from "../../hooks/useSignUp";
+import { useAuthContext } from "../../context/AuthContext";
 
 const SignUp = () => {
+  const { authUser } = useAuthContext();
+  
   const [inputs, setInputs] = useState({
     fullName: "",
     username: "",
@@ -12,16 +15,19 @@ const SignUp = () => {
     gender: "",
   });
 
-  const { loading, signUp } = useSignUp();
-  const handleCheckboxChange = (gender) => {
-    setInputs({...inputs,gender})
-  }
+  const {  signUp } = useSignUp();
 
-  const handleSubmit = async(e) => {
+  const handleCheckboxChange = (gender) => {
+    setInputs({ ...inputs, gender });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     await signUp(inputs);
-    console.log(inputs);
   };
+  if (authUser) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className="flex flex-col items-center justify-center min-w-96 mx-auto">
       <div className="w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0">
@@ -88,7 +94,10 @@ const SignUp = () => {
               }
             />
           </div>
-          <GenderCheckBox onCheckBoxChange={handleCheckboxChange} selectedGender={inputs.gender} />
+          <GenderCheckBox
+            onCheckBoxChange={handleCheckboxChange}
+            selectedGender={inputs.gender}
+          />
           <Link
             to="/login"
             className="text-sm hover:underline hover:text-blue-600 inline-block p-2"
