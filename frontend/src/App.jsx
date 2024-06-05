@@ -25,9 +25,8 @@ function App() {
   return (
     <div className="p-4 h-screen flex items-center justify-center">
       <AuthContextProvider>
-        <RouterProvider router={router}>
-          <Toaster />
-        </RouterProvider>
+        <RouterProvider router={router}></RouterProvider>
+        <Toaster />
       </AuthContextProvider>
     </div>
   );
