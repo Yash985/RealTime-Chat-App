@@ -4,7 +4,7 @@ import Message from "../models/message.model.js";
 export const sendMessage = async (req, res) => {
   try {
     const { id: receiverId } = req.params;
-    const { message } = req.body;
+    const { message } = JSON.parse(req.body.data);
     const senderId = req.user._id;
 
     let conversation = await Coversation.findOne({
