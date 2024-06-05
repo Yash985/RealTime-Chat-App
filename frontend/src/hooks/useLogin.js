@@ -8,9 +8,8 @@ const useLogin = () => {
   const { setAuthUser } = useAuthContext();
   const login = async (username, password) => {
     const success = handleInputErrors(username, password);
-    console.log(success);
     if (!success) return;
-    console.log("useLogin hook called");
+
     setLoading(true);
     try {
       const res = await axios.post(
