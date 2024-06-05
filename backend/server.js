@@ -8,30 +8,28 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import messageRoutes from "./routes/message.routes.js";
 import userRoutes from "./routes/user.routes.js";
-import {app,server} from "./socket/socket.js";
+import { app, server } from "./socket/socket.js";
 //Database connection
 import connectToDb from "./db/connectToDb.js";
 
-
 const port = process.env.PORT || 3000;
 
-const __dirname= path.resolve();
+const __dirname = path.resolve();
 dotenv.config();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); //Parse URL-encoded bodies
-app.use(cookieParser());//Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+app.use(cookieParser()); //Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
 
-
 app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname,"frontend","dist","index.html"))
-})
+  res.sendFile(path.join(__dirname, "frontend", "dist", "index.html"));
+});
 // app.get("/", (req, res) => {
 //   res.send("API is running....");
 // });
