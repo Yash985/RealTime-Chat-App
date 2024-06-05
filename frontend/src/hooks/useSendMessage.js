@@ -19,8 +19,8 @@ const useSendMessage = () => {
           headers: { "Content-Type": "application/json" },
         }
       );
-
-      setMessages([...messages, res.data.message]);
+      
+      setMessages([...messages, res.data]);
     } catch (err) {
       toast.error(err.message);
     } finally {

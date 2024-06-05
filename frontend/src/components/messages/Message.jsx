@@ -1,16 +1,38 @@
-const Message = () => {
+import { useAuthContext } from "../../context/AuthContext";
+import { extractTime } from "../../utils/exactTime";
+import useConversation from "../../zustand/useConversation";
+
+const Message = ({ messageData }) => {
+  const { authUser } = useAuthContext();
+
+  const { selectedConversation } = useConversation();
+  const fromMe = messageData.senderId === authUser._id;
+  const formattedTime = extractTime(messageData.createdAt);
+
+  const chatClassName = fromMe ? "chat chat-end" : "chat chat-start";
+  const profilePic = fromMe
+    ? authUser.profilePic
+    : selectedConversation?.profilePic;
+  const BubbleBgColor = fromMe ? "bg-lime-600" : "bg-gray-600";
   return (
-    <div className="chat chat-end">
+    <div className={`${chatClassName}`}>
       <div className="chat-image avatar">
         <div className="w-10 rounded-full">
-          <img
-            src="https://cdn0.iconfinder.com/data/icons/avatars-3/512/avatar_hipster_guy-512.png"
-            alt="avatar"
-          />
+          <img src={profilePic} alt="avatar" />
         </div>
       </div>
-          <div className={"chat-bubble text-white bg-lime-600"}>Hi! Whats is up?</div>
-          <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">12:42</div>
+      {messageData ? (
+        <>
+          <div
+            className={`chat-bubble text-white  ${BubbleBgColor} pb-2`}
+          >
+            {messageData.message}
+          </div>
+          <div className="chat-footer text-gray-100 opacity-50 text-xs flex gap-1 items-center">
+            {formattedTime}
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };
