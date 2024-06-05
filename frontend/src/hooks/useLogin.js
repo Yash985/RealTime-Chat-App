@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toast } from "react-hot-toast";
+import toast from "react-hot-toast";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -8,7 +8,9 @@ const useLogin = () => {
   const { setAuthUser } = useAuthContext();
   const login = async (username, password) => {
     const success = handleInputErrors(username, password);
+    console.log(success);
     if (!success) return;
+    console.log("useLogin hook called");
     setLoading(true);
     try {
       const res = await axios.post(
@@ -30,7 +32,7 @@ const useLogin = () => {
 
 export default useLogin;
 
-function handleInputErrors({ username, password }) {
+function handleInputErrors(username, password) {
   if (!username || !password) {
     toast.error("Please fill all the fields");
     return false;
