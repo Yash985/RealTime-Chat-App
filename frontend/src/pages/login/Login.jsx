@@ -1,7 +1,19 @@
+import { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
+import useLogin from "../../hooks/useLogin";
 const Login = () => {
+  const [username, setUsername] = useState(""); 
+  const [password, setPassword] = useState("");
+
   const { authUser } = useAuthContext();
+  const { loading, login } = useLogin();
+
+  const handlesubmit = async(e) => {
+    e.preventDefault();
+    await login( username, password )
+   }
+
   if (authUser) {
     return <Navigate to="/" />;
   }
@@ -13,7 +25,7 @@ const Login = () => {
           <span className="text-blue-500"> Wren</span>
         </h1>
 
-        <form>
+        <form onSubmit={handlesubmit}>
           <div>
             <label className="label p-2">
               <span className="text-base label-text">Username</span>
@@ -22,6 +34,7 @@ const Login = () => {
               type="text"
               placeholder="Enter Username"
               className="w-full input input-bordered h-10"
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
 
@@ -33,6 +46,7 @@ const Login = () => {
               type="password"
               placeholder="Enter Password"
               className="w-full input input-bordered h-10"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <Link
@@ -42,7 +56,9 @@ const Login = () => {
             {"Don't"} have an account?
           </Link>
           <div>
-            <button className="btn btn-block btn-sm mt-2">Login</button>
+            <button className="btn btn-block btn-sm mt-2"
+            disabled={loading}>
+              {loading?<span className="loading loading-spinner"></span>:"Login"}</button>
           </div>
         </form>
       </div>
