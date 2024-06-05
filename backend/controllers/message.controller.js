@@ -1,5 +1,6 @@
 import Coversation from "../models/coversation.model.js";
 import Message from "../models/message.model.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
   try {
@@ -29,11 +30,18 @@ export const sendMessage = async (req, res) => {
       conversation.messages.push(newMessage._id);
     }
 
-    //SOCKET IO FUNCTIONALITY WILL BE ADDED HERE
-
     //This is a better way to save multiple documents at once
     //Since we saving it in parallel
     await Promise.all([newMessage.save(), conversation.save()]);
+
+    //SOCKET IO FUNCTIONALITY WILL BE ADDED HERE
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      //io.to(<socketId>).emit() is used to send events to a specific client
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+
+    }
+    
 
     res.status(200).json(newMessage);
   } catch (err) {
