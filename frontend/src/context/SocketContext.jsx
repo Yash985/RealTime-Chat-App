@@ -6,37 +6,41 @@ const SocketContext = createContext();
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const useSocketContext = () => {
-	return useContext(SocketContext);
+  return useContext(SocketContext);
 };
 
 export const SocketContextProvider = ({ children }) => {
-	const [socket, setSocket] = useState(null);
-	const [onlineUsers, setOnlineUsers] = useState([]);
-	const { authUser } = useAuthContext();
+  const [socket, setSocket] = useState(null);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const { authUser } = useAuthContext();
 
-	useEffect(() => {
-		if (authUser) {
-			const socket = io("http://localhost:3000", {
-				query: {
-					userId: authUser._id,
-				},
-			});
-			setSocket(socket);
+  useEffect(() => {
+    if (authUser) {
+      const socket = io("https://wren-chat-app.vercel.app", {
+        query: {
+          userId: authUser._id,
+        },
+      });
+      setSocket(socket);
 
-			// socket.on() is used to listen to the events. can be used both on client and server side
-			socket.on("getOnlineUsers", (users) => {
-				setOnlineUsers(users);
-			});
+      // socket.on() is used to listen to the events. can be used both on client and server side
+      socket.on("getOnlineUsers", (users) => {
+        setOnlineUsers(users);
+      });
 
-			return () => socket.close();
-		} else {
-			if (socket) {
-				socket.close();
-				setSocket(null);
-			}
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [authUser]);
+      return () => socket.close();
+    } else {
+      if (socket) {
+        socket.close();
+        setSocket(null);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authUser]);
 
-	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+  return (
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
+      {children}
+    </SocketContext.Provider>
+  );
 };
