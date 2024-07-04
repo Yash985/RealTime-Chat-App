@@ -11,11 +11,11 @@ import userRoutes from "./routes/user.routes.js";
 import { app, server } from "./socket/socket.js";
 //Database connection
 import connectToDb from "./db/connectToDb.js";
-
-const port = process.env.PORT || 3000;
-
-const __dirname = path.resolve();
 dotenv.config();
+
+const port = process.env.PORT || 4000;
+const __dirname = path.resolve();
+
 
 app.use(cors());
 app.use(express.json());

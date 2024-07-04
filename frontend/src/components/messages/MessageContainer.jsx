@@ -6,6 +6,7 @@ import { TiMessages } from "react-icons/ti";
 import { useAuthContext } from "../../context/AuthContext";
 
 const MessageContainer = () => {
+  
   const { selectedConversation, setSelectedConversation } = useConversation();
   useEffect(() => {
     //cleanup function
@@ -32,6 +33,7 @@ const MessageContainer = () => {
         </>
       )}
     </div>
+    
   );
 };
 

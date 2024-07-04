@@ -27,11 +27,14 @@ function App() {
     <div className="p-4 h-screen flex items-center justify-center">
       <AuthContextProvider>
         <SocketContextProvider>
+          <div>
         <RouterProvider router={router}></RouterProvider>
-          <Toaster />
+          {/* <Toaster /> */}
+          </div>
         </SocketContextProvider>
       </AuthContextProvider>
     </div>
+    
   );
 }
 

@@ -13,6 +13,7 @@ const Home = () => {
       <Sidebar />
       <MessageContainer />
     </div>
+   
   );
 };
 
